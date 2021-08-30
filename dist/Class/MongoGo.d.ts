@@ -1,5 +1,5 @@
 import { Collection } from "../Utility/Collection";
-export default class MongoGo {
+declare class MongoGo {
     private schema;
     private MongoGoCollection;
     constructor(MongoURI: string);
@@ -46,3 +46,5 @@ export default class MongoGo {
      */
     collection(): Promise<Collection<string, any>>;
 }
+export { MongoGo };
+export default MongoGo;

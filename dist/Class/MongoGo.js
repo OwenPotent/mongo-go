@@ -19,6 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MongoGo = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const Collection_1 = require("../Utility/Collection");
 const mix = mongoose_1.SchemaTypes.Mixed;
@@ -126,4 +127,5 @@ class MongoGo {
         return this.MongoGoCollection;
     }
 }
+exports.MongoGo = MongoGo;
 exports.default = MongoGo;

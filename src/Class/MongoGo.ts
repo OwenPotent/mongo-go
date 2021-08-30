@@ -5,7 +5,7 @@ import { Collection } from "../Utility/Collection";
 const mix = SchemaTypes.Mixed
 const { readyState } = connection
 
-export default class MongoGo {
+class MongoGo {
     private schema = model<MongoGoSchema>("MongoGo-Collection", new Schema({
         key: String,
         value: mix
@@ -112,3 +112,6 @@ export default class MongoGo {
         return this.MongoGoCollection;
     }
 }
+
+export { MongoGo };
+export default MongoGo;
