@@ -25,5 +25,10 @@
   "devDependencies": {
     "@types/node": "^16.7.6",
     "typedoc": "^0.21.9"
+  },
+  "homepage": "owenpotent.github.io/mongo-go/",
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/OwenPotent/mongo-go"
   }
 }
