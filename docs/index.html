@@ -1,0 +1,178 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>mongo-go</title>
+	<meta name="description" content="Documentation for mongo-go">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">mongo-go</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<h1>mongo-go</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#mongogo" id="mongogo" style="color: inherit; text-decoration: none;">
+					<h2>MongoGo</h2>
+				</a>
+				<p>An easy to use database handler for MongoDB, inspired by quick.db! MongoGo handles the hard part in getters, setters, and much more!</p>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<p>Using NPM:</p>
+				<pre><code class="language-shell"><span style="color: #000000">npm install mongo-go</span>
+</code></pre>
+				<p>Using Yarn:</p>
+				<pre><code class="language-shell"><span style="color: #000000">yarn add mongo-go</span>
+</code></pre>
+				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+					<h2>Getting Started</h2>
+				</a>
+				<p>To get started with using MongoGo, import the default class from the package.</p>
+				<pre><code class="language-js"><span style="color: #008000">// Using Node.js `require()`</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">MongoGo</span><span style="color: #000000"> = </span><span style="color: #795E26">require</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mongo-go&quot;</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// Using ES6 imports</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">MongoGo</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;mongo-go&quot;</span>
+</code></pre>
+				<a href="#overview" id="overview" style="color: inherit; text-decoration: none;">
+					<h2>Overview</h2>
+				</a>
+				<p><strong>Connecting to MongoDB</strong></p>
+				<p>First, we need to establish a connection. MongoGo handles it easily by defining a new <code>instance</code> of MongoGo. A function <code>&lt;MongoGo&gt;.ready()</code> is then fired when you start your app. The only parameter needed is a <code>MongoURI</code> or if your using a localhost, use <code>mongodb://localhost:27017/my_database</code>.</p>
+				<p>Here is an example:</p>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">MongoClient</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MongoGo</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;mongodb://localhost:27017/my_database&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+				<p>You don&#39;t have to pass in another method to connect it by yourself, once you&#39;ve started the app, it&#39;ll start a connection to the cloud and return a <code>Connection</code>.</p>
+				<p><strong>Important!</strong> Due to an issue with the Mongoose&#39;s <code>ConnectionOptions</code> option, <code>useNewURLParser</code> isn&#39;t use during the connection, in some case, an error or warning might pop-up whilst connecting.</p>
+				<p><strong>Do we have to define a model/schema?</strong><br>Nope, like we said, MongoGo handles it all! it uses 2 parameters in a built-in <code>model</code> we made, which are a &quot;key&quot; and a &quot;value&quot;.</p>
+				<ul>
+					<li>A <code>&quot;key&quot;</code> is also the id, which is used to set a new <code>Object</code>, get the data from the <code>&quot;key&quot;</code> and others. The <code>&quot;key&quot;</code> parameter <strong>must</strong> always be a <code>String</code> type value.</li>
+					<li>A <code>&quot;value&quot;</code> is just the data that will be stored with the <code>&quot;key&quot;</code> together in an <code>Object</code> literal in the database. A <code>&quot;value&quot;</code> can be any type of value!</li>
+				</ul>
+				<a href="#methods" id="methods" style="color: inherit; text-decoration: none;">
+					<h3>Methods</h3>
+				</a>
+				<p>Currently, all method returns a <code>Promise</code>.</p>
+				<a href="#get" id="get" style="color: inherit; text-decoration: none;">
+					<h4>get</h4>
+				</a>
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #800000">&lt;</span><span style="color: #267F99">MongoGo</span><span style="color: #800000">&gt;</span><span style="color: #000000">.get(&quot;Hello&quot;)</span>
+</code></pre>
+				<a href="#set" id="set" style="color: inherit; text-decoration: none;">
+					<h4>set</h4>
+				</a>
+				<pre><code class="language-js"><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #800000">&lt;</span><span style="color: #267F99">MongoGo</span><span style="color: #800000">&gt;</span><span style="color: #000000">.set(&quot;Hello&quot;, &quot;World&quot;)</span>
+</code></pre>
+				<a href="#delete" id="delete" style="color: inherit; text-decoration: none;">
+					<h4>delete</h4>
+				</a>
+				<pre><code class="language-js"><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #800000">&lt;</span><span style="color: #267F99">MongoGo</span><span style="color: #800000">&gt;</span><span style="color: #000000">.delete(&quot;Hello&quot;)</span>
+</code></pre>
+				<a href="#push" id="push" style="color: inherit; text-decoration: none;">
+					<h4>push</h4>
+				</a>
+				<pre><code class="language-js"><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #800000">&lt;</span><span style="color: #267F99">MongoGo</span><span style="color: #800000">&gt;</span><span style="color: #000000">.push(&quot;Hello&quot;, [&quot;World&quot;, &quot;Earth&quot;, &quot;Moon&quot;...])</span>
+</code></pre>
+				<a href="#collection" id="collection" style="color: inherit; text-decoration: none;">
+					<h4>collection</h4>
+				</a>
+				<pre><code class="language-js"><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #800000">&lt;</span><span style="color: #267F99">MongoGo</span><span style="color: #800000">&gt;</span><span style="color: #000000">.collection)</span>
+</code></pre>
+				<p><strong>Important!</strong><br>Keep it mind that <code>&lt;MongoGo&gt;</code> is just an example instance, you may rename it to your own likings.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="classes/Collection.html" class="tsd-kind-icon">Collection</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/CollectionConstructor.html" class="tsd-kind-icon">Collection<wbr>Constructor</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
