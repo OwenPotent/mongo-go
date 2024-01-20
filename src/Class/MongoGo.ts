@@ -1,4 +1,4 @@
-import mongoose, { connection, model, Schema, SchemaTypes } from "mongoose";
+import { connection, model, Schema, SchemaTypes, connect } from "mongoose";
 import { MongoGoSchema } from "../Interfaces/MongoGoSchema";
 import { Collection } from "../Utility/Collection";
 
@@ -20,7 +20,7 @@ class MongoGo {
             }
         }
 
-        mongoose.connect(MongoURI)
+        connect(MongoURI)
 
         this.ready()
     }

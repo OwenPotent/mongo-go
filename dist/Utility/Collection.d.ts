@@ -316,3 +316,4 @@ declare class Collection<K, V> extends Map<K, V> {
     sorted(compareFunction?: (firstValue: V, secondValue: V, firstKey: K, secondKey: K) => number): this;
 }
 export { Collection };
+export default Collection;

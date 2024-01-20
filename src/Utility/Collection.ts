@@ -16,7 +16,7 @@ class Collection<K, V> extends Map<K, V> {
     private _array!: V[] | null;
     private _keyArray!: K[] | null;
     public static readonly default: typeof Collection = Collection;
-    public ['constructor']: typeof Collection;
+    public ['constructor']: typeof Collection = Collection;
 
     public constructor(entries?: ReadonlyArray<readonly [K, V]> | null) {
         super(entries);
@@ -36,6 +36,12 @@ class Collection<K, V> extends Map<K, V> {
          * @private
          */
         Object.defineProperty(this, '_keyArray', { value: null, writable: true, configurable: true });
+
+        if (entries?.[Symbol.iterator]) {
+            for (const [key, value] of entries) {
+                this.set(key, value);
+            }
+        }
     }
 
     /**
@@ -601,3 +607,4 @@ class Collection<K, V> extends Map<K, V> {
 }
 
 export { Collection };
+export default Collection;

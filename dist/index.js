@@ -11,4 +11,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./Class/MongoGo"), exports);
+__exportStar(require("./Class/Logger"), exports);
 __exportStar(require("./Utility/Collection"), exports);

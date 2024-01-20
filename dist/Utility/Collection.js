@@ -11,7 +11,7 @@ class Collection extends Map {
     _array;
     _keyArray;
     static default = Collection;
-    ['constructor'];
+    ['constructor'] = Collection;
     constructor(entries) {
         super(entries);
         /**
@@ -28,6 +28,11 @@ class Collection extends Map {
          * @private
          */
         Object.defineProperty(this, '_keyArray', { value: null, writable: true, configurable: true });
+        if (entries?.[Symbol.iterator]) {
+            for (const [key, value] of entries) {
+                this.set(key, value);
+            }
+        }
     }
     /**
      * Identical to [Map.get()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/get).
@@ -392,3 +397,4 @@ class Collection extends Map {
     }
 }
 exports.Collection = Collection;
+exports.default = Collection;

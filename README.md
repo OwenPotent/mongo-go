@@ -86,3 +86,16 @@ console.log(<MongoGo>.collection)
 
 **Important!**  
 Keep it mind that `<MongoGo>` is just an example instance, you may rename it to your own likings.
+
+## License
+
+MongoGo is licensed under the MIT license. See [LICENSE](https://github.com/git/git-scm.com) for more information.
+
+## Updates
+
+- **1.0.0**
+  - Initial release
+- **1.1.0**
+  - Added `push` method
+  - Added `collection` getter
+  - Added `logger` class
