@@ -2,34 +2,38 @@ import { connection, model, Schema, SchemaTypes, connect } from "mongoose";
 import { MongoGoSchema } from "../Interfaces/MongoGoSchema";
 import { Collection } from "../Utility/Collection";
 
-const mix = SchemaTypes.Mixed
-const { readyState } = connection
+const mix = SchemaTypes.Mixed;
+const { readyState } = connection;
 
 class MongoGo {
-    private schema = model<MongoGoSchema>("MongoGo-Collection", new Schema({
-        key: String,
-        value: mix
-    }))
+    private schema = model<MongoGoSchema>(
+        "MongoGo-Collection",
+        new Schema({
+            key: String,
+            value: mix,
+        })
+    );
 
     private MongoGoCollection: Collection<string, any> = new Collection();
 
     constructor(MongoURI: string) {
         if (readyState !== 1) {
             if (!MongoURI) {
-                throw new Error("A connection with MongoDB was not established, you did not provide a MongoURI!");
+                throw new Error(
+                    "A connection with MongoDB was not established, you did not provide a MongoURI!"
+                );
             }
         }
 
-        connect(MongoURI)
+        connect(MongoURI);
 
-        this.ready()
+        this.ready();
     }
 
     private async ready(): Promise<void> {
-        await this.schema.find({ }).then((data) => {
-            data.forEach(({ key, value }) => {
-                this.MongoGoCollection.set(key, value);
-            });
+        const data = await this.schema.find({});
+        data.forEach(({ key, value }) => {
+            this.MongoGoCollection.set(key, value);
         });
     }
 
@@ -43,14 +47,14 @@ class MongoGo {
      */
     public async set(key: string, value: any): Promise<void> {
         if (!key || !value) return;
-        this.schema.findOne({ key }, async (err: any, data: any) => {
-            if (err) throw err;
-            if (data) data.value = value;
-            else data = new this.schema({ key, value });
-
-            data.save();
-            this.MongoGoCollection.set(key, value);
-        });
+        let data = await this.schema.findOne({ key });
+        if (data) {
+            data.value = value;
+        } else {
+            data = new this.schema({ key, value });
+        }
+        await data.save();
+        this.MongoGoCollection.set(key, value);
     }
 
     /**
@@ -63,10 +67,10 @@ class MongoGo {
      */
     public async delete(key: string): Promise<void> {
         if (!key) return;
-        this.schema.findOne({ key }, async (err: any, data: any) => {
-            if (err) throw err;
-            if (data) await data.delete();
-        });
+        const data = await this.schema.findOne({ key });
+        if (data) {
+            await data.delete();
+        }
         this.MongoGoCollection.delete(key);
     }
 
@@ -89,20 +93,23 @@ class MongoGo {
      * @param key The key you wish to push data to
      * @example <MongoGo>.push("Hello", ["World", "Earth", "Moon"])
      * 
-     * // The client first checks if the value is an array, if not an error is throwed
+     * // The client first checks if the value is an array, if not an error is thrown
      * // Otherwise, the value is then pushed into the data
      */
     public async push(key: string, ...pushValue: string[]): Promise<void> {
         const data = this.MongoGoCollection.get(key);
         const values = pushValue.flat();
-        if (!Array.isArray(data))
+        if (!Array.isArray(data)) {
             throw Error(`You can't push data to a ${typeof data} value!`);
-
+        }
         data.push(pushValue);
-        this.schema.findOne({ key }, async (_err: any, res: any) => {
-            res.value = [...res.value, ...values];
-            res.save();
-        });
+        const res = await this.schema.findOne({ key });
+        if (res) {
+            res.value = data;
+            await res.save();
+        } else {
+            await this.set(key, data);
+        }
     }
 
     /**

@@ -8,7 +8,7 @@ const { readyState } = mongoose_1.connection;
 class MongoGo {
     schema = (0, mongoose_1.model)("MongoGo-Collection", new mongoose_1.Schema({
         key: String,
-        value: mix
+        value: mix,
     }));
     MongoGoCollection = new Collection_1.Collection();
     constructor(MongoURI) {
@@ -21,10 +21,9 @@ class MongoGo {
         this.ready();
     }
     async ready() {
-        await this.schema.find({}).then((data) => {
-            data.forEach(({ key, value }) => {
-                this.MongoGoCollection.set(key, value);
-            });
+        const data = await this.schema.find({});
+        data.forEach(({ key, value }) => {
+            this.MongoGoCollection.set(key, value);
         });
     }
     /**
@@ -38,16 +37,15 @@ class MongoGo {
     async set(key, value) {
         if (!key || !value)
             return;
-        this.schema.findOne({ key }, async (err, data) => {
-            if (err)
-                throw err;
-            if (data)
-                data.value = value;
-            else
-                data = new this.schema({ key, value });
-            data.save();
-            this.MongoGoCollection.set(key, value);
-        });
+        let data = await this.schema.findOne({ key });
+        if (data) {
+            data.value = value;
+        }
+        else {
+            data = new this.schema({ key, value });
+        }
+        await data.save();
+        this.MongoGoCollection.set(key, value);
     }
     /**
      * Removes data from the database using the "key" as the id of the object in the container.
@@ -60,12 +58,10 @@ class MongoGo {
     async delete(key) {
         if (!key)
             return;
-        this.schema.findOne({ key }, async (err, data) => {
-            if (err)
-                throw err;
-            if (data)
-                await data.delete();
-        });
+        const data = await this.schema.findOne({ key });
+        if (data) {
+            await data.delete();
+        }
         this.MongoGoCollection.delete(key);
     }
     /**
@@ -87,19 +83,24 @@ class MongoGo {
      * @param key The key you wish to push data to
      * @example <MongoGo>.push("Hello", ["World", "Earth", "Moon"])
      *
-     * // The client first checks if the value is an array, if not an error is throwed
+     * // The client first checks if the value is an array, if not an error is thrown
      * // Otherwise, the value is then pushed into the data
      */
     async push(key, ...pushValue) {
         const data = this.MongoGoCollection.get(key);
         const values = pushValue.flat();
-        if (!Array.isArray(data))
+        if (!Array.isArray(data)) {
             throw Error(`You can't push data to a ${typeof data} value!`);
+        }
         data.push(pushValue);
-        this.schema.findOne({ key }, async (_err, res) => {
-            res.value = [...res.value, ...values];
-            res.save();
-        });
+        const res = await this.schema.findOne({ key });
+        if (res) {
+            res.value = data;
+            await res.save();
+        }
+        else {
+            await this.set(key, data);
+        }
     }
     /**
      * @returns Cached data with self-made Collection class

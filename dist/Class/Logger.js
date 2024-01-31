@@ -10,7 +10,7 @@ exports.LoggerLevels = {
     warn: chalk_1.default.yellowBright("WARN"),
     info: chalk_1.default.blueBright("INFO"),
     debug: chalk_1.default.magentaBright("DEBUG"),
-    verbose: chalk_1.default.cyanBright("VERBOSE")
+    verbose: chalk_1.default.cyanBright("VERBOSE"),
 };
 /**
  * Logger class to log messages to the console
@@ -38,12 +38,15 @@ class Logger {
         this.format = options.format || "YYYY-MM-DD HH:mm:ss";
     }
     _log(level, message, ...args) {
-        if (exports.LoggerLevels[level] === undefined)
+        if (exports.LoggerLevels[level] === undefined) {
             throw new TypeError(`Logger level must be one of: ${Object.keys(exports.LoggerLevels).join(", ")}`);
-        if (exports.LoggerLevels[level] === "DEBUG" && this.level !== "debug")
+        }
+        if (exports.LoggerLevels[level] === "DEBUG" && this.level !== "debug") {
             return;
-        if (exports.LoggerLevels[level] === "VERBOSE" && this.level !== "verbose")
+        }
+        if (exports.LoggerLevels[level] === "VERBOSE" && this.level !== "verbose") {
             return;
+        }
         const timestamp = this.timestamp ? `[${this._timestamp}] ` : "";
         const color = this.colors ? exports.LoggerLevels[level] : level;
         const msg = `${timestamp}${color} ${message}`;

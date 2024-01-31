@@ -5,7 +5,7 @@ export const LoggerLevels = {
     warn: chalk.yellowBright("WARN"),
     info: chalk.blueBright("INFO"),
     debug: chalk.magentaBright("DEBUG"),
-    verbose: chalk.cyanBright("VERBOSE")
+    verbose: chalk.cyanBright("VERBOSE"),
 };
 
 export type LoggerLevels = keyof typeof LoggerLevels;
@@ -46,9 +46,17 @@ export default class Logger {
     }
 
     private _log(level: LoggerLevels, message: string, ...args: any[]): void {
-        if (LoggerLevels[level] === undefined) throw new TypeError(`Logger level must be one of: ${Object.keys(LoggerLevels).join(", ")}`);
-        if (LoggerLevels[level] === "DEBUG" && this.level !== "debug") return;
-        if (LoggerLevels[level] === "VERBOSE" && this.level !== "verbose") return;
+        if (LoggerLevels[level] === undefined) {
+            throw new TypeError(
+                `Logger level must be one of: ${Object.keys(LoggerLevels).join(", ")}`
+            );
+        }
+        if (LoggerLevels[level] === "DEBUG" && this.level !== "debug") {
+            return;
+        }
+        if (LoggerLevels[level] === "VERBOSE" && this.level !== "verbose") {
+            return;
+        }
 
         const timestamp = this.timestamp ? `[${this._timestamp}] ` : "";
         const color = this.colors ? LoggerLevels[level] : level;

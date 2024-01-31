@@ -37,7 +37,7 @@ declare class MongoGo {
      * @param key The key you wish to push data to
      * @example <MongoGo>.push("Hello", ["World", "Earth", "Moon"])
      *
-     * // The client first checks if the value is an array, if not an error is throwed
+     * // The client first checks if the value is an array, if not an error is thrown
      * // Otherwise, the value is then pushed into the data
      */
     push(key: string, ...pushValue: string[]): Promise<void>;
